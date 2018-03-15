@@ -2,21 +2,27 @@ console.log('Starting app.js');
 
 const fs = require('fs');
 const os = require('os');
-const notes = require('./notes.js');
+const yargs = require('yargs');
 const _ = require('lodash');
 
-var user = os.userInfo();
-var filteredArray = _.uniq(['Kory', 'Kory', 'Ben' , 1 ,2 ,3]);
-var res = notes.add(5,4);
+const notes = require('./notes.js');
 
+const argv = yargs.argv;
+var command = process.argv[2];
+console.log('Command: ', command);
+console.log('Yargs', argv);
 
-console.log(res);
-console.log("The answer is:", notes.add(6,3));
-console.log(filteredArray);
-
-
-// fs.appendFile("greetings.txt", 'Hello ' + user.username + "!" + `You are ${notes.age}.`, function(err){
-//     if (err){
-//         console.log('Error creating file.');
-//     }
-// });
+if (command === 'add'){ 
+    notes.addNote(argv.title, argv.body);
+}
+else if (command === 'list'){
+    notes.getAll();
+}
+else if (command === 'read'){
+    notes.getNote(argv.title);
+}
+else if (command === 'remove'){
+    notes.removeNote(argv.title);
+}
+else 
+    console.log('Command not recognized');
